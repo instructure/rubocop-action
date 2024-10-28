@@ -64,7 +64,7 @@ module Github
     end
     changed_files
       .reject { |file| file.fetch("status") == "removed" }
-      .select { |file| file.fetch("filename").end_with?(".rb") }
+      .select { |file| file.fetch("filename").end_with?(".rb", ".rake") }
       .map { |file| File.new(file) }
   end
 
