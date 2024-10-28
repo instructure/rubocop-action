@@ -30,6 +30,7 @@ require_relative "lib/github"
 github_event = JSON.parse(File.read(ENV.fetch("GITHUB_EVENT_PATH")))
 pr_number = github_event.fetch("pull_request").fetch("number")
 owner_and_repository = ENV.fetch("GITHUB_REPOSITORY")
+outside_diff_fail = ENV.fetch("OUTSIDE_DIFF_FAIL") == "true"
 
 changed_ruby_files = Github.pull_request_ruby_files(owner_and_repository, pr_number)
 
@@ -110,7 +111,7 @@ files_with_offenses.each do |file|
     # Otherwise create a new comment.
 
     existing_comment = comments_made_by_rubocop.find do |comment|
-      comment.fetch("body").include?("rubocop-comment-id: #{path}-#{line}")
+      comment.fetch("body").include?("<!-- rubocop-comment-id: #{path}-#{line} -->")
     end
 
     if existing_comment
@@ -138,7 +139,7 @@ files_with_offenses.each do |file|
         line: line,
       )
     else
-      offences_outside_diff << { path: path, line: line, message: message }
+      offences_outside_diff << { path: path, line: line, message: message, count: offenses.count }
     end
   end
 end
@@ -189,6 +190,7 @@ end
 # Fail the build if there were any offenses
 
 number_of_offenses = files_with_offenses.sum { |file| file.fetch("offenses").length }
+number_of_offenses -= offences_outside_diff.sum { |offense| offense[:count] } unless outside_diff_fail
 if number_of_offenses > 0
   puts ""
   puts "#{number_of_offenses} offenses found! Failing the build..."
