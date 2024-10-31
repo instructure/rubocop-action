@@ -64,6 +64,16 @@ Allows you to pass additional arguments to rubocop. E.g.
           rubocop_arguments: --config .rubocop.yml
 ```
 
+#### `outside_diff_fail`
+
+If set to `true`, the action will fail if there are offenses outside the diff. Default is `true`.
+
+```yaml
+      - uses: reclaim-the-stack/rubocop-action@v1
+        with:
+          outside_diff_fail: true
+```
+
 ### Known issues
 
 We don't handle hitting API rate limits on the GitHub API. Presumably this could end up being a problem if you create a pull request with a ton of offences requiring inline comments. Shouldn't be a problem for normal use though.

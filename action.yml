@@ -10,6 +10,9 @@ inputs:
   rubocop_arguments:
     description: Arguments passed to rubocop cli
     default: ""
+  outside_diff_fail:
+    description: Fail build for offences found outside of PR diff
+    default: "true"
 runs:
   using: composite
   steps:
@@ -18,3 +21,4 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         RUBOCOP_GEM_VERSIONS: ${{ inputs.gem_versions }}
+        OUTSIDE_DIFF_FAIL: ${{ inputs.outside_diff_fail }}
