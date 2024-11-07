@@ -158,6 +158,7 @@ if offences_outside_diff.any?
     <!-- rubocop-comment-id: outside-diff -->
     <details>
       <summary>Rubocop offenses found outside of the diff</summary>
+      <br>
 
   BODY
 
