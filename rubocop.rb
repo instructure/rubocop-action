@@ -156,13 +156,16 @@ if offences_outside_diff.any?
 
   body = <<~BODY
     <!-- rubocop-comment-id: outside-diff -->
-    Rubocop offenses found outside of the diff:
+    <details>
+      <summary>Rubocop offenses found outside of the diff</summary>
 
   BODY
 
   body += offences_outside_diff.map do |offense|
     "**#{offense.fetch(:path)}:#{offense.fetch(:line)}**\n#{offense.fetch(:message)}"
   end.join("\n\n")
+
+  body += "\n</details>"
 
   if existing_separate_comment
     existing_comment_id = existing_separate_comment.fetch("id")
