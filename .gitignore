@@ -3,3 +3,6 @@
 
 # Rubocop
 .rubocop-https---*
+
+# Rubymine
+.idea
